@@ -32,15 +32,24 @@ function displayResults(data) {
     }
 }
 
+let similarityChart; // Declare a variable to hold the chart instance
+
 function displayChart(data) {
     const ctx = document.getElementById('similarity-chart').getContext('2d');
-    const chart = new Chart(ctx, {
+
+    // If the chart already exists, destroy it before creating a new one
+    if (similarityChart) {
+        similarityChart.destroy();
+    }
+
+    // Create new chart
+    similarityChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: data.indices.map((index, i) => `Document ${index}`),  // Labels will be "Document 1", "Document 2", etc.
+            labels: data.documents.map((_, index) => `Document ${data.indices[index]}`), // Use document indices as labels
             datasets: [{
                 label: 'Cosine Similarity',
-                data: data.similarities,  // Similarity scores for the top 5 documents
+                data: data.similarities, // Use similarities data from the response
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
@@ -50,11 +59,6 @@ function displayChart(data) {
             scales: {
                 y: {
                     beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
                 }
             }
         }
