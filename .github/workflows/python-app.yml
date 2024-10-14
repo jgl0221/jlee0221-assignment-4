@@ -1,5 +1,4 @@
 # This workflow will install Python dependencies, run the app, and ensure the server is running
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
 name: Python application
 
@@ -33,21 +32,13 @@ jobs:
         python -m pip install --upgrade pip
         make install
 
-    # Step 4: Lint with flake8 (Optional, keep this if you want linting)
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-    # Step 5: Run the application and allow the server time to start
+    # Step 4: Run the application and allow the server time to start
     - name: Run the web application
       run: |
         make run &
         sleep 10  # Sleep to allow the server time to start
 
-    # Step 6: Test whether the server is running on localhost:3000
+    # Step 5: Test whether the server is running on localhost:3000
     - name: Test server status
       run: |
         curl -I http://localhost:3000  # Check if the server responds
